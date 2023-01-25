@@ -1,30 +1,46 @@
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [lastName, setLastname] = useState('');
+  const [submittedguest, setSubmittedguest] = useState('');
+
+  function handleChange(x) {
+    setLastname(x.target.value);
+  }
+
+  function handleSubmit(y) {
+    y.preventDefault();
+    setSubmittedguest(lastName);
+    setLastname('');
+  }
+
   return (
-    <>
-      <div className='data-test-id="guest"'>
-        <form>
-          <div>textfield First name -usestate onchange </div>;
-          <div>
-            textfield Last name -usestate onchange when pressing return guest is
-          </div>
-          <button aria-label="data-test-id=`guest`">Remove</button>{' '}
-          {/*-to clear all input of the form*/}
-          <div>
-            <label>
-              <input
-                aria-label="fist name last name attending status"
-                type="checkbox"
-              />
-              Checkbox{' '}
-              {/*-if clicked --> attending, if not --> not attending */}
-            </label>
-          </div>
-        </form>
-      </div>
-    </>
+    <div>
+      <form onSubmit={handleSubmit}>
+        {/* Input Name*/}
+        <input type="text" value={lastName} onChange={handleChange} />
+        <div className='data-test-id="guest"'>submitted: {submittedguest}</div>
+
+        <br />
+
+        <br />
+        {/* Checkbox*/}
+        <input
+          className="attending"
+          checked={submittedguest}
+          type="checkbox"
+          onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
+        />
+
+        <div>
+          {submittedguest} is {submittedguest ? '' : 'not'} attending!
+        </div>
+        <br />
+        {/* Remove to Usestate */}
+        <button onClick={() => useState}>Remove</button>
+      </form>
+    </div>
   );
 }
-
 export default App;
