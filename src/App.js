@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [lastName, setLastname] = useState('');
-  const [submittedguest, setSubmittedguest] = useState('');
+  const [submittedguestlastName, setSubmittedguest] = useState('');
 
   function handleChange(x) {
     setLastname(x.target.value);
@@ -20,7 +20,9 @@ function App() {
       <form onSubmit={handleSubmit}>
         {/* Input Name*/}
         <input type="text" value={lastName} onChange={handleChange} />
-        <div className='data-test-id="guest"'>submitted: {submittedguest}</div>
+        <div className='data-test-id="guest"'>
+          submitted: {submittedguestlastName}
+        </div>
 
         <br />
 
@@ -28,14 +30,16 @@ function App() {
         {/* Checkbox*/}
         <input
           className="attending"
-          checked={submittedguest}
+          checked={submittedguestlastName}
           type="checkbox"
           onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
         />
 
         <div>
-          {submittedguest} is {submittedguest ? '' : 'not'} attending!
+          {submittedguestlastName} is {submittedguestlastName ? '' : 'not'}{' '}
+          attending!
         </div>
+
         <br />
         {/* Remove to Usestate */}
         <button onClick={() => useState}>Remove</button>
