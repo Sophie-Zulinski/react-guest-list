@@ -14,6 +14,11 @@ function App() {
     setSubmittedguest(lastName);
     setLastname('');
   }
+  const newState = [submittedguestlastName];
+  console.log('newstate', newState);
+
+  const array = newState.push[submittedguestlastName];
+  console.log('array', array);
 
   return (
     <div>
@@ -32,7 +37,9 @@ function App() {
           className="attending"
           checked={submittedguestlastName}
           type="checkbox"
-          onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
+          onChange={(event) => {
+            setSubmittedguest(event.currentTarget.checked);
+          }}
         />
 
         <div>
