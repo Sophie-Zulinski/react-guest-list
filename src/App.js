@@ -1,57 +1,63 @@
-import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-function App() {
-  const [lastName, setLastname] = useState('');
-  const [submittedguestlastName, setSubmittedguest] = useState('');
+export default function Form() {
+  const [person, setPerson] = useState({
+    name: {
+      firstName: '',
+      lastName: '',
+      attending: false,
+    },
+  });
 
-  function handleChange(x) {
-    setLastname(x.target.value);
+  function handlefirstName(e) {
+    setPerson({
+      ...person,
+      name: {
+        ...person.name,
+        firstName: e.target.value,
+      },
+    });
   }
 
-  function handleSubmit(y) {
-    y.preventDefault();
-    setSubmittedguest(lastName);
-    setLastname('');
+  function handlelastName(e) {
+    setPerson({
+      ...person,
+      name: {
+        ...person.name,
+        lastName: e.target.value,
+      },
+    });
   }
-  const newState = [submittedguestlastName];
-  console.log('newstate', newState);
 
-  const array = newState.push[submittedguestlastName];
-  console.log('array', array);
+  function handleAttending(e) {
+    setPerson({
+      ...person,
+      name: {
+        ...person.name,
+        attending: e.target.value,
+      },
+    });
+  }
 
+  console.log(person);
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        {/* Input Name*/}
-        <input type="text" value={lastName} onChange={handleChange} />
-        <div className='data-test-id="guest"'>
-          submitted: {submittedguestlastName}
-        </div>
-
-        <br />
-
-        <br />
-        {/* Checkbox*/}
+    <>
+      <form onSubmit={handleAttending}>
+        <label>
+          FirstName
+          <input value={person.name.firstName} onChange={handlefirstName} />
+        </label>
+        <label>
+          LastName
+          <input value={person.name.lastName} onChange={handlelastName} />
+        </label>
         <input
-          className="attending"
-          checked={submittedguestlastName}
+          checked={person.name.attending}
           type="checkbox"
-          onChange={(event) => {
-            setSubmittedguest(event.currentTarget.checked);
-          }}
+          onChange={handleAttending}
         />
-
-        <div>
-          {submittedguestlastName} is {submittedguestlastName ? '' : 'not'}{' '}
-          attending!
-        </div>
-
-        <br />
-        {/* Remove to Usestate */}
         <button onClick={() => useState}>Remove</button>
       </form>
-    </div>
+    </>
   );
 }
-export default App;

@@ -1,10 +1,11 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-function App() {
+async function App() {
   const [lastName, setLastname] = useState('');
   const [submittedguestlastName, setSubmittedguest] = useState('');
 
+  // function to handle submit by klicking the key
   function handleChange(x) {
     setLastname(x.target.value);
   }
