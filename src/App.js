@@ -1,61 +1,56 @@
 import { useState } from 'react';
 
 export default function Form() {
-  const [person, setPerson] = useState({
-    name: {
-      firstName: '',
-      lastName: '',
-      attending: false,
-    },
+  const [guest, setGuest] = useState({
+    firstName: '',
+    lastName: '',
+    attending: false,
   });
 
   function handlefirstName(e) {
-    setPerson({
-      ...person,
-      name: {
-        ...person.name,
-        firstName: e.target.value,
-      },
+    setGuest({
+      ...guest,
+
+      firstName: e.target.value,
     });
   }
 
   function handlelastName(e) {
-    setPerson({
-      ...person,
-      name: {
-        ...person.name,
-        lastName: e.target.value,
-      },
+    setGuest({
+      ...guest,
+
+      lastName: e.target.value,
     });
   }
 
   function handleAttending(e) {
-    setPerson({
-      ...person,
-      name: {
-        ...person.name,
-        attending: e.target.value,
-      },
+    setGuest({
+      ...guest,
+
+      attending: e.target.checked,
     });
   }
 
-  console.log(person);
+  console.log(guest);
+
   return (
     <>
       <form onSubmit={handleAttending}>
         <label>
           FirstName
-          <input value={person.name.firstName} onChange={handlefirstName} />
+          <input value={guest.firstName} onChange={handlefirstName} />
         </label>
         <label>
           LastName
-          <input value={person.name.lastName} onChange={handlelastName} />
+          <input value={guest.lastName} onChange={handlelastName} />
         </label>
         <input
-          checked={person.name.attending}
+          checked={guest.attending}
           type="checkbox"
           onChange={handleAttending}
         />
+        <br />
+
         <button onClick={() => useState}>Remove</button>
       </form>
     </>
