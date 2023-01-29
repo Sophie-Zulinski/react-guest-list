@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
-let nextId = 1;
+let nextId = 0;
+const initialArtists = [];
 
-export default function Form() {
+export default function App() {
+  const [artists, setArtists] = useState(initialArtists);
+
   const [guest, setGuest] = useState([
     {
       firstName: '',
@@ -36,52 +39,38 @@ export default function Form() {
   }
 
   function handleClick() {
-    const insertAt = 1; // Could be any index
+    const insertAt = 0; // Could be any index
     const nextArtists = [
       // Items before the insertion point:
-      ...guest.slice(0, insertAt),
+      ...artists.slice(0, insertAt),
       // New item:
-      { id: nextId++, ...guest },
+      { id: nextId++, name: guest },
       // Items after the insertion point:
-      ...guest.slice(insertAt),
+      ...artists.slice(insertAt),
     ];
-    setGuest(nextArtists);
+    setArtists(nextArtists);
     setGuest('');
   }
 
-  console.log('guest 01', guest);
-
   return (
     <>
-      <form>
-        <label>
-          FirstName
-          <input value={guest.firstName} onChange={handlefirstName} />
-        </label>
-        <label>
-          LastName
-          <input value={guest.lastName} onChange={handlelastName} />
-        </label>
-        {/*
-        <input
-          checked={guest.attending}
-          type="checkbox"
-          onChange={handleAttending}
-        />
-        <br />
-        <br />
-        <br />
-        {/* key
-        <button onClick={handleClick}>Insert</button>
-        <ul>
-          {guest.map((artist) => (
-            <li key={nextId++}>{guest.lastName}</li>
-          ))}
-        </ul>*/}
-        {console.log('guest 02', guest)}
+      <h1>Guest list</h1>
+      <input value={guest.firstName} onChange={handlefirstName} />
+      <input value={guest.lastName} onChange={handlelastName} />
+      <input
+        checked={guest.attending}
+        type="checkbox"
+        onChange={handleAttending}
+      />
 
-        <button onClick={() => useState}>Remove</button>
-      </form>
+      <button onClick={handleClick}>Insert</button>
+
+      {/*<ul>
+        {artists.map((artist) => (
+          <li key={artist.id}>{artist.name}</li>
+        ))}
+      </ul>*/}
+      {console.log('finalguests', artists)}
     </>
   );
 }
