@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 
 let nextId = 0;
-
 export default function App() {
-  const [artists, setArtists] = useState([]);
   const [guest, setGuest] = useState([
     {
       firstName: '',
@@ -12,6 +10,39 @@ export default function App() {
     },
   ]);
 
+  // firstName
+
+  function handlefirstName(e) {
+    setGuest({
+      ...guest,
+
+      firstName: e.target.value,
+    });
+  }
+
+  // lastName
+  function handlelastName(e) {
+    setGuest({
+      ...guest,
+
+      lastName: e.target.value,
+    });
+  }
+
+  // attending-Button
+  function handleAttending(e) {
+    setGuest({
+      ...guest,
+
+      attending: e.target.checked,
+    });
+  }
+
+  // submit-Button
+  const [registeredguests, setregisteredGuests] = useState([]);
+  // Form ends here
+
+  // API starts here!!
   // get guests
   const [guests, setGuests] = useState([]);
   const [refetch, setRefetch] = useState(true);
@@ -47,66 +78,39 @@ export default function App() {
     fetchUsers().catch((error) => console.log(error));
   }, [refetch]);
 
-  // firstName
-
-  function handlefirstName(e) {
-    setGuest({
-      ...guest,
-
-      firstName: e.target.value,
-    });
-  }
-
-  // lastName
-  function handlelastName(e) {
-    setGuest({
-      ...guest,
-
-      lastName: e.target.value,
-    });
-  }
-
-  // attending-Button
-  function handleAttending(e) {
-    setGuest({
-      ...guest,
-
-      attending: e.target.checked,
-    });
-  }
-
-  // submit-Button
-  function handleClick() {
-    const insertAt = 0; // Could be any index
-    const nextArtists = [
-      // Items before the insertion point:
-      ...artists.slice(0, insertAt),
-      // New item:
-      { id: nextId++, name: guest },
-      // Items after the insertion point:
-      ...artists.slice(insertAt),
-    ];
-    setArtists(nextArtists);
-    setGuest('');
-  }
-
   return (
     <>
       <h1>Guest list</h1>
+      {/*Input firstname*/}
       <input value={guest.firstName} onChange={handlefirstName} />
-
+      {/*Input lastname*/}
       <input value={guest.lastName} onChange={handlelastName} />
       <br />
 
       <span>attending</span>
+      {/*Attending checkbox*/}
       <input
         checked={guest.attending}
         type="checkbox"
         onChange={handleAttending}
       />
-      <br />
 
-      <button onClick={handleClick}>Submit</button>
+      <br />
+      {/*Register Button*/}
+      <button
+        onClick={() => {
+          setGuest('');
+          registeredguests.push({
+            id: nextId++,
+            name: guest,
+          });
+        }}
+      >
+        Register
+      </button>
+      <br />
+      <br />
+      <br />
       {/*WRONG!: <ul>
         {artists.map((name) => (
           <li key={name.firstName}>{name.lastName}</li>
@@ -116,7 +120,7 @@ export default function App() {
       <br />
       <br />
       <br />
-      {/*API starts here*/}
+      {/*API starts here!!*/}
       <h1>Get all Guests</h1>
 
       {guests.map((user) => {
@@ -144,7 +148,7 @@ export default function App() {
       >
         Add Guest
       </button>
-      {console.log('finalguests', artists)}
+      {console.log('registerguests:', registeredguests)}
     </>
   );
 }
