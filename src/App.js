@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
 let nextId = 0;
-const initialArtists = [];
 
 export default function App() {
-  const [artists, setArtists] = useState(initialArtists);
+  const [artists, setArtists] = useState([]);
 
   const [guest, setGuest] = useState([
     {
@@ -62,15 +61,12 @@ export default function App() {
         type="checkbox"
         onChange={handleAttending}
       />
-
       <button onClick={handleClick}>Insert</button>
-
-      {/*<ul>
-        {artists.map((artist) => (
-          <li key={artist.id}>{artist.name}</li>
+      <ul>
+        {artists.map((name) => (
+          <li key={name.firstName}>{name.lastName}</li>
         ))}
-      </ul>*/}
-
+      </ul>
       {console.log('finalguests', artists)}
     </>
   );
