@@ -70,6 +70,7 @@ export default function App() {
           <li key={artist.id}>{artist.name}</li>
         ))}
       </ul>*/}
+
       {console.log('finalguests', artists)}
     </>
   );
