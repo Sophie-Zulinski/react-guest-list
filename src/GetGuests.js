@@ -16,7 +16,7 @@ export default function GetGuests() {
   }, [refetch]);
   return (
     <>
-      <h1>PropTypes</h1>
+      <h1>Get all Guests</h1>
 
       {guests.map((user) => {
         return (
