@@ -19,7 +19,7 @@ function App() {
   // Submit on return-Taste
   function handleSubmit(y) {
     y.preventDefault();
-    setSubmittedguest(firstName + lastName + checked);
+    setSubmittedguest(firstName);
   }
   //Resetbutton
   function reset(ev) {
@@ -33,6 +33,7 @@ function App() {
   // get guests
   const [guests, setGuests] = useState([]);
   const [refetch, setRefetch] = useState(true);
+  const [refetch02, setRefetch02] = useState(true);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -47,7 +48,7 @@ function App() {
 
   // post guests
   useEffect(() => {
-    async function postUsers() {
+    async function handleSubmit() {
       const baseUrl = 'http://localhost:4000';
       const response = await fetch(`${baseUrl}/guests`, {
         method: 'POST',
@@ -63,14 +64,28 @@ function App() {
       const createdGuest = await response.json();
       console.log('createdguest', createdGuest);
     }
-    postUsers().catch((error) => console.log(error));
+    handleSubmit().catch((error) => console.log(error));
   }, [refetch]);
 
   // delete guest
 
+  useEffect(() => {
+    async function handleDelete() {
+      const baseUrl = 'http://localhost:4000';
+      const response = await fetch(`${baseUrl}/guests/7`, {
+        method: 'DELETE',
+      });
+      const deletedGuest = await response.json();
+      console.log('createdguest', deletedGuest);
+    }
+    handleDelete().catch((error) => console.log(error));
+  }, [refetch02]);
+
+  // return
   return (
     <div data-test-id="guest">
       <form onSubmit={handleSubmit}>
+        {console.log('submittedguest', [submittedguest])}
         <h1>Registration Form</h1>
         {/* Input fristname*/}
         <label htmlFor="firstName">First name</label>
@@ -82,16 +97,13 @@ function App() {
         />
         <div className='data-test-id="guest"'></div>
         {/* Input lastname*/}
-        <label htmlFor="firstName">First name</label>
+        <label htmlFor="firstName">Last name</label>
         <input
           type="text"
           value={lastName}
           onChange={handleChange}
           id={lastName}
         />
-
-        <div className='data-test-id="guest"'>submitted: {submittedguest}</div>
-        {console.log('submittedGuest', submittedguest)}
         <br />
         {/* Checkbox*/}
         <label htmlFor="attending">Attending</label>
@@ -116,6 +128,16 @@ function App() {
         }}
       >
         Add Guest
+      </button>
+
+      {/* API delete guest */}
+      <h1>Delete Guest</h1>
+      <button
+        onClick={() => {
+          setRefetch02(!refetch02);
+        }}
+      >
+        Delete Guest
       </button>
       {/* Reset button */}
       <button onClick={reset}>Reset</button>
