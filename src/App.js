@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 function App() {
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
-  const [submittedguestlastName, setSubmittedguest] = useState('');
+  const [submittedguest, setSubmittedguest] = useState('');
 
   function handleChange(x) {
     setLastname(x.target.value);
@@ -16,8 +16,7 @@ function App() {
 
   function handleSubmit(y) {
     y.preventDefault();
-    setSubmittedguest(lastName);
-    setLastname('');
+    setSubmittedguest(firstName + lastName);
   }
 
   // API starts here!!
@@ -64,25 +63,18 @@ function App() {
         <div className='data-test-id="guest"'></div>
         {/* Input lastname*/}
         <input type="text" value={lastName} onChange={handleChange} />
-        <div className='data-test-id="guest"'>
-          submitted: {submittedguestlastName}
-        </div>
 
+        <div className='data-test-id="guest"'>submitted: {submittedguest}</div>
+        {console.log('submittedGuest', submittedguest)}
         <br />
-
-        <br />
-        {/* Checkbox*/}
         <input
           className="attending"
-          checked={submittedguestlastName}
+          checked={submittedguest}
           type="checkbox"
           onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
         />
-
-        <div>
-          {submittedguestlastName} is {submittedguestlastName ? '' : 'not'}{' '}
-          attending!
-        </div>
+        <br />
+        {/* Checkbox*/}
 
         <br />
         {/* Remove to Usestate */}
