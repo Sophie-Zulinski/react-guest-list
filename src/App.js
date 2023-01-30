@@ -5,6 +5,7 @@ function App() {
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
   const [submittedguest, setSubmittedguest] = useState('');
+  const [checked, setChecked] = useState(false);
 
   // Input function first name
   function handlefirstChange(x) {
@@ -15,16 +16,17 @@ function App() {
     setLastname(x.target.value);
   }
 
-  // Submit on return
+  // Submit on return-Taste
   function handleSubmit(y) {
     y.preventDefault();
-    setSubmittedguest(firstName + lastName);
+    setSubmittedguest(firstName + lastName + checked);
   }
   //Resetbutton
   function reset(ev) {
     ev.preventDefault();
     setLastname('');
     setFirstname('');
+    setChecked(false);
   }
 
   // API starts here!!
@@ -55,7 +57,7 @@ function App() {
         body: JSON.stringify({
           firstName: firstName,
           lastName: lastName,
-          attending: true,
+          attending: checked,
         }),
       });
       const createdGuest = await response.json();
@@ -67,7 +69,7 @@ function App() {
   // delete guest
 
   return (
-    <div>
+    <div data-test-id="guest">
       <form onSubmit={handleSubmit}>
         <h1>Registration Form</h1>
         {/* Input fristname*/}
@@ -92,11 +94,14 @@ function App() {
         {console.log('submittedGuest', submittedguest)}
         <br />
         {/* Checkbox*/}
+        <label htmlFor="attending">Attending</label>
         <input
+          aria-label="attending status"
           className="attending"
-          checked={submittedguest}
+          checked={checked}
           type="checkbox"
-          onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
+          id="attending"
+          onChange={(event) => setChecked(event.currentTarget.checked)}
         />
         <br />
 
@@ -112,7 +117,7 @@ function App() {
       >
         Add Guest
       </button>
-      {/* Remove to Usestate */}
+      {/* Reset button */}
       <button onClick={reset}>Reset</button>
       {/* API print Guestlist */}
       <h1>Get all Guests</h1>
