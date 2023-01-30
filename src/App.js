@@ -1,46 +1,24 @@
+import './App.css';
 import { useEffect, useState } from 'react';
 
-let nextId = 0;
-export default function App() {
-  const [guest, setGuest] = useState([
-    {
-      firstName: '',
-      lastName: '',
-      attending: false,
-    },
-  ]);
+function App() {
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [submittedguestlastName, setSubmittedguest] = useState('');
 
-  // firstName
-
-  function handlefirstName(e) {
-    setGuest({
-      ...guest,
-
-      firstName: e.target.value,
-    });
+  function handleChange(x) {
+    setLastname(x.target.value);
   }
 
-  // lastName
-  function handlelastName(e) {
-    setGuest({
-      ...guest,
-
-      lastName: e.target.value,
-    });
+  function handlefirstChange(x) {
+    setFirstname(x.target.value);
   }
 
-  // attending-Button
-  function handleAttending(e) {
-    setGuest({
-      ...guest,
-
-      attending: e.target.checked,
-    });
+  function handleSubmit(y) {
+    y.preventDefault();
+    setSubmittedguest(lastName);
+    setLastname('');
   }
-
-  // submit-Button
-  const [registeredguests, setregisteredGuests] = useState([]);
-  // Form ends here
 
   // API starts here!!
   // get guests
@@ -68,9 +46,8 @@ export default function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: '0',
-          firstName: guest.firstName,
-          lastName: guest.lastName,
+          firstName: firstName,
+          lastName: lastName,
         }),
       });
       const createdGuest = await response.json();
@@ -80,59 +57,39 @@ export default function App() {
   }, [refetch]);
 
   return (
-    <>
-      <h1>Guest list</h1>
-      {/*Input firstname*/}
-      <label for="First name">First name</label>
-      <br />
-      <input
-        value={guest.firstName}
-        onChange={handlefirstName}
-        id="First name"
-      />
-      <br />
-      {/*Input lastname*/}
-      <label for="Last name">Last name</label>
-      <br />
-      <input value={guest.lastName} onChange={handlelastName} id="Last name" />
-      <br />
+    <div>
+      <form onSubmit={handleSubmit}>
+        {/* Input fristname*/}
+        <input type="text" value={firstName} onChange={handlefirstChange} />
+        <div className='data-test-id="guest"'></div>
+        {/* Input lastname*/}
+        <input type="text" value={lastName} onChange={handleChange} />
+        <div className='data-test-id="guest"'>
+          submitted: {submittedguestlastName}
+        </div>
 
-      <span>attending</span>
-      {/*Attending checkbox*/}
-      <input
-        checked={guest.attending}
-        type="checkbox"
-        onChange={handleAttending}
-      />
+        <br />
 
-      <br />
-      {/*Register Button*/}
-      <button
-        onClick={() => {
-          setGuest('');
-          registeredguests.push({
-            id: nextId,
-            name: guest,
-          });
-        }}
-      >
-        Register
-      </button>
-      <br />
-      <br />
-      <br />
-      {/*WRONG!: <ul>
-        {artists.map((name) => (
-          <li key={name.firstName}>{name.lastName}</li>
-        ))}
-      </ul>*/}
-      {/*Remove Button (doesn't work yet*/}
-      <button onClick={() => useState}>Remove</button>
-      <br />
-      <br />
-      <br />
-      {/*API starts here!!*/}
-      {/*get all guests*/}
+        <br />
+        {/* Checkbox*/}
+        <input
+          className="attending"
+          checked={submittedguestlastName}
+          type="checkbox"
+          onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
+        />
+
+        <div>
+          {submittedguestlastName} is {submittedguestlastName ? '' : 'not'}{' '}
+          attending!
+        </div>
+
+        <br />
+        {/* Remove to Usestate */}
+        <button onClick={() => useState}>Remove</button>
+      </form>
+      {/* API STARTS HERE!! */}
+      {/* API print Guestlist */}
       <h1>Get all Guests</h1>
 
       {guests.map((user) => {
@@ -144,7 +101,7 @@ export default function App() {
           </div>
         );
       })}
-
+      {/* API get all guests */}
       <button
         onClick={() => {
           setRefetch(!refetch);
@@ -152,7 +109,7 @@ export default function App() {
       >
         Get All Guests
       </button>
-      {/*add guests (atm just string)*/}
+      {/* API add guest */}
       <h1>Add Guest</h1>
       <button
         onClick={() => {
@@ -161,11 +118,7 @@ export default function App() {
       >
         Add Guest
       </button>
-      <br />
-      <br />
-      <br />
-      {console.log('registerguests:', registeredguests)}
-      {console.log('current guest lastName', guest.lastName)}
-    </>
+    </div>
   );
 }
+export default App;
