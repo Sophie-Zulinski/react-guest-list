@@ -68,6 +68,7 @@ export default function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          id: '0',
           firstName: guest.firstName,
           lastName: guest.lastName,
         }),
@@ -82,9 +83,18 @@ export default function App() {
     <>
       <h1>Guest list</h1>
       {/*Input firstname*/}
-      <input value={guest.firstName} onChange={handlefirstName} />
+      <label for="First name">First name</label>
+      <br />
+      <input
+        value={guest.firstName}
+        onChange={handlefirstName}
+        id="First name"
+      />
+      <br />
       {/*Input lastname*/}
-      <input value={guest.lastName} onChange={handlelastName} />
+      <label for="Last name">Last name</label>
+      <br />
+      <input value={guest.lastName} onChange={handlelastName} id="Last name" />
       <br />
 
       <span>attending</span>
@@ -101,7 +111,7 @@ export default function App() {
         onClick={() => {
           setGuest('');
           registeredguests.push({
-            id: nextId++,
+            id: nextId,
             name: guest,
           });
         }}
