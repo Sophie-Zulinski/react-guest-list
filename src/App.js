@@ -73,7 +73,7 @@ export default function App() {
         }),
       });
       const createdGuest = await response.json();
-      console.log('allguests', createdGuest);
+      console.log('createdguest', createdGuest);
     }
     fetchUsers().catch((error) => console.log(error));
   }, [refetch]);
@@ -128,9 +128,9 @@ export default function App() {
       {guests.map((user) => {
         return (
           <div key={`user-profile-${user.id}`}>
-            <h3>
+            <div>
               {user.id} {user.firstName} {user.lastName}
-            </h3>
+            </div>
           </div>
         );
       })}
@@ -151,8 +151,11 @@ export default function App() {
       >
         Add Guest
       </button>
+      <br />
+      <br />
+      <br />
       {console.log('registerguests:', registeredguests)}
-      {console.log('testneu', guest.lastName)}
+      {console.log('current guest lastName', guest.lastName)}
     </>
   );
 }
