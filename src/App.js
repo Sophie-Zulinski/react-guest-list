@@ -1,10 +1,11 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
+let id = 0;
 function App() {
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
-  const [submittedguest, setSubmittedguest] = useState('');
+  const [users, setUsers] = useState([]);
   const [checked, setChecked] = useState(false);
 
   // Input function first name
@@ -16,17 +17,35 @@ function App() {
     setLastname(x.target.value);
   }
 
-  // Submit on return-Taste
-  function handleSubmit(y) {
-    y.preventDefault();
-    setSubmittedguest(firstName);
-  }
   //Resetbutton
   function reset(ev) {
     ev.preventDefault();
     setLastname('');
     setFirstname('');
     setChecked(false);
+  }
+
+  //Resetbutton02
+  function resetlist(ev) {
+    ev.preventDefault();
+    setUsers([]);
+  }
+
+  function handleSubmit(event) {
+    const newUsers = [
+      {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        attending: checked,
+      },
+      ...users,
+    ];
+    id++;
+    setUsers(newUsers);
+    setFirstname('');
+    setLastname('');
+    event.preventDefault();
   }
 
   // API starts here!!
@@ -48,7 +67,7 @@ function App() {
 
   // post guests
   useEffect(() => {
-    async function handleSubmit() {
+    async function handlePost() {
       const baseUrl = 'http://localhost:4000';
       const response = await fetch(`${baseUrl}/guests`, {
         method: 'POST',
@@ -64,7 +83,7 @@ function App() {
       const createdGuest = await response.json();
       console.log('createdguest', createdGuest);
     }
-    handleSubmit().catch((error) => console.log(error));
+    handlePost().catch((error) => console.log(error));
   }, [refetch]);
 
   // delete guest
@@ -85,7 +104,6 @@ function App() {
   return (
     <div data-test-id="guest">
       <form onSubmit={handleSubmit}>
-        {console.log('submittedguest', [submittedguest])}
         <h1>Registration Form</h1>
         {/* Input fristname*/}
         <label htmlFor="firstName">First name</label>
@@ -116,39 +134,50 @@ function App() {
           onChange={(event) => setChecked(event.currentTarget.checked)}
         />
         <br />
-
+        Names:
+        {users.map((user) => {
+          return (
+            <div key={`user-${user.id}`}>
+              {user.id} {user.firstName} {user.lastName} {user.checked}
+            </div>
+          );
+        })}
+        <button>Add name</button>
+        {console.log('names', users)}
         <br />
+        {/* Reset button */}
+        <button onClick={reset}>Reset Input Fields</button>
+        <button onClick={resetlist}>Reset Namelist</button>
       </form>
       {/* API STARTS HERE!! */}
       {/* API add guest */}
-      <h1>Add Guest</h1>
+      <h1>Add Guest to Guestlist API</h1>
       <button
         onClick={() => {
           setRefetch(!refetch);
         }}
       >
-        Add Guest
+        Add Guest to Guestlist API
       </button>
 
       {/* API delete guest */}
-      <h1>Delete Guest</h1>
+      <h1>Delete Guest from API</h1>
       <button
         onClick={() => {
           setRefetch02(!refetch02);
         }}
       >
-        Delete Guest
+        Delete Guest from API
       </button>
-      {/* Reset button */}
-      <button onClick={reset}>Reset</button>
-      {/* API print Guestlist */}
-      <h1>Get all Guests</h1>
 
-      {guests.map((user) => {
+      {/* API print Guestlist */}
+      <h1>Get all Guests from API</h1>
+
+      {guests.map((userapi) => {
         return (
-          <div key={`user-profile-${user.id}`}>
+          <div key={`user02-profile-${userapi.id}`}>
             <div>
-              {user.id} {user.firstName} {user.lastName}
+              {userapi.id} {userapi.firstName} {userapi.lastName}
             </div>
           </div>
         );
@@ -159,7 +188,7 @@ function App() {
           setRefetch(!refetch);
         }}
       >
-        Get All Guests
+        Get All Guests from API
       </button>
     </div>
   );
