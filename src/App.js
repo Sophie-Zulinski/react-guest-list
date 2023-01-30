@@ -68,8 +68,8 @@ export default function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          firstName: 'Sophie',
-          lastName: 'Zulinski',
+          firstName: guest.firstName,
+          lastName: guest.lastName,
         }),
       });
       const createdGuest = await response.json();
@@ -116,11 +116,13 @@ export default function App() {
           <li key={name.firstName}>{name.lastName}</li>
         ))}
       </ul>*/}
+      {/*Remove Button (doesn't work yet*/}
       <button onClick={() => useState}>Remove</button>
       <br />
       <br />
       <br />
       {/*API starts here!!*/}
+      {/*get all guests*/}
       <h1>Get all Guests</h1>
 
       {guests.map((user) => {
@@ -140,6 +142,7 @@ export default function App() {
       >
         Get All Guests
       </button>
+      {/*add guests (atm just string)*/}
       <h1>Add Guest</h1>
       <button
         onClick={() => {
@@ -149,6 +152,7 @@ export default function App() {
         Add Guest
       </button>
       {console.log('registerguests:', registeredguests)}
+      {console.log('testneu', guest.lastName)}
     </>
   );
 }
