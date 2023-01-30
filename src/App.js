@@ -6,17 +6,25 @@ function App() {
   const [lastName, setLastname] = useState('');
   const [submittedguest, setSubmittedguest] = useState('');
 
+  // Input function first name
+  function handlefirstChange(x) {
+    setFirstname(x.target.value);
+  }
+  // Input function last name
   function handleChange(x) {
     setLastname(x.target.value);
   }
 
-  function handlefirstChange(x) {
-    setFirstname(x.target.value);
-  }
-
+  // Submit on return
   function handleSubmit(y) {
     y.preventDefault();
     setSubmittedguest(firstName + lastName);
+  }
+  //Resetbutton
+  function reset(ev) {
+    ev.preventDefault();
+    setLastname('');
+    setFirstname('');
   }
 
   // API starts here!!
@@ -37,7 +45,7 @@ function App() {
 
   // post guests
   useEffect(() => {
-    async function fetchUsers() {
+    async function postUsers() {
       const baseUrl = 'http://localhost:4000';
       const response = await fetch(`${baseUrl}/guests`, {
         method: 'POST',
@@ -47,26 +55,43 @@ function App() {
         body: JSON.stringify({
           firstName: firstName,
           lastName: lastName,
+          attending: true,
         }),
       });
       const createdGuest = await response.json();
       console.log('createdguest', createdGuest);
     }
-    fetchUsers().catch((error) => console.log(error));
+    postUsers().catch((error) => console.log(error));
   }, [refetch]);
+
+  // delete guest
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <h1>Registration Form</h1>
         {/* Input fristname*/}
-        <input type="text" value={firstName} onChange={handlefirstChange} />
+        <label htmlFor="firstName">First name</label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={handlefirstChange}
+          id={firstName}
+        />
         <div className='data-test-id="guest"'></div>
         {/* Input lastname*/}
-        <input type="text" value={lastName} onChange={handleChange} />
+        <label htmlFor="firstName">First name</label>
+        <input
+          type="text"
+          value={lastName}
+          onChange={handleChange}
+          id={lastName}
+        />
 
         <div className='data-test-id="guest"'>submitted: {submittedguest}</div>
         {console.log('submittedGuest', submittedguest)}
         <br />
+        {/* Checkbox*/}
         <input
           className="attending"
           checked={submittedguest}
@@ -74,13 +99,21 @@ function App() {
           onChange={(event) => setSubmittedguest(event.currentTarget.checked)}
         />
         <br />
-        {/* Checkbox*/}
 
         <br />
-        {/* Remove to Usestate */}
-        <button onClick={() => useState}>Remove</button>
       </form>
       {/* API STARTS HERE!! */}
+      {/* API add guest */}
+      <h1>Add Guest</h1>
+      <button
+        onClick={() => {
+          setRefetch(!refetch);
+        }}
+      >
+        Add Guest
+      </button>
+      {/* Remove to Usestate */}
+      <button onClick={reset}>Reset</button>
       {/* API print Guestlist */}
       <h1>Get all Guests</h1>
 
@@ -100,15 +133,6 @@ function App() {
         }}
       >
         Get All Guests
-      </button>
-      {/* API add guest */}
-      <h1>Add Guest</h1>
-      <button
-        onClick={() => {
-          setRefetch(!refetch);
-        }}
-      >
-        Add Guest
       </button>
     </div>
   );
