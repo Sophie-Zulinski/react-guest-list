@@ -77,14 +77,14 @@ function App() {
         body: JSON.stringify({
           firstName: firstName,
           lastName: lastName,
-          attending: checked,
+          checked: [true],
         }),
       });
       const createdGuest = await response.json();
       console.log('createdguest', createdGuest);
     }
     handlePost().catch((error) => console.log(error));
-  }, [refetch]);
+  }, [firstName, lastName, checked]);
 
   // delete guest
 
