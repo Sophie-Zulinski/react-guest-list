@@ -3,29 +3,29 @@ import { useEffect, useState } from 'react';
 
 let id = 0;
 function App() {
-  const [firstName, setFirstname] = useState('');
-  const [lastName, setLastname] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [users, setUsers] = useState([]);
   const [checked, setChecked] = useState(false);
 
   // Input function first name
   function handlefirstChange(x) {
-    setFirstname(x.target.value);
+    setFirstName(x.target.value);
   }
   // Input function last name
   function handleChange(x) {
-    setLastname(x.target.value);
+    setLastName(x.target.value);
   }
 
-  //Resetbutton
+  // Resetbutton
   function reset(ev) {
     ev.preventDefault();
-    setLastname('');
-    setFirstname('');
+    setLastName('');
+    setFirstName('');
     setChecked(false);
   }
 
-  //Resetbutton02
+  // Resetbutton02
   function resetlist(ev) {
     ev.preventDefault();
     setUsers([]);
@@ -43,8 +43,8 @@ function App() {
     ];
     id++;
     setUsers(newUsers);
-    setFirstname('');
-    setLastname('');
+    setFirstName('');
+    setLastName('');
     event.preventDefault();
   }
 
@@ -107,21 +107,11 @@ function App() {
         <h1>Registration Form</h1>
         {/* Input fristname*/}
         <label htmlFor="firstName">First name</label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={handlefirstChange}
-          id={firstName}
-        />
-        <div className='data-test-id="guest"'></div>
+        <input value={firstName} onChange={handlefirstChange} id={firstName} />
+        <div className='data-test-id="guest' />
         {/* Input lastname*/}
         <label htmlFor="firstName">Last name</label>
-        <input
-          type="text"
-          value={lastName}
-          onChange={handleChange}
-          id={lastName}
-        />
+        <input value={lastName} onChange={handleChange} id={lastName} />
         <br />
         {/* Checkbox*/}
         <label htmlFor="attending">Attending</label>
