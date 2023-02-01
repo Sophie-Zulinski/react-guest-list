@@ -49,10 +49,10 @@ function App() {
   }
 
   // API starts here!!
-  // get guests
+  // show guests
   const [guests, setGuests] = useState([]);
   const [refetch, setRefetch] = useState(true);
-  const [refetch02, setRefetch02] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -61,32 +61,31 @@ function App() {
       const allGuests = await response.json();
       console.log('allguests', allGuests);
       setGuests(allGuests);
+      setIsLoading(false);
     }
     fetchUsers().catch((error) => console.log(error));
   }, [refetch]);
 
   // post guests
-  useEffect(() => {
-    async function handlePost() {
-      const baseUrl = 'http://localhost:4000';
-      const response = await fetch(`${baseUrl}/guests`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          checked: [true],
-        }),
-      });
-      const createdGuest = await response.json();
-      console.log('createdguest', createdGuest);
-    }
-    handlePost().catch((error) => console.log(error));
-  }, [firstName, lastName, checked]);
+  async function handlePost(event) {
+    event.preventDefault();
+    const baseUrl = 'http://localhost:4000';
+    const response = await fetch(`${baseUrl}/guests`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ firstName: firstName, lastName: lastName }),
+    });
+    const createdGuest = await response.json();
+    setRefetch(!refetch);
+    setFirstName('');
+    setLastName('');
 
-  // delete guest
+    console.log(createdGuest);
+  }
+
+  // delete one guest (right now only id 7 !!)
 
   useEffect(() => {
     async function handleDelete() {
@@ -95,10 +94,25 @@ function App() {
         method: 'DELETE',
       });
       const deletedGuest = await response.json();
-      console.log('createdguest', deletedGuest);
+      console.log('deletedGuest', deletedGuest);
     }
     handleDelete().catch((error) => console.log(error));
-  }, [refetch02]);
+  }, [refetch]);
+
+  // Delete ALL guests
+
+  async function deleteAllGuests() {
+    for (const guest of guests) {
+      const baseUrl = 'http://localhost:4000';
+      await fetch(`${baseUrl}/guests/${guest.id}`, {
+        method: 'DELETE',
+      });
+    }
+    const baseUrl = 'http://localhost:4000';
+    const response = await fetch(`${baseUrl}/guests`);
+    const allGuests = await response.json();
+    setGuests(allGuests);
+  }
 
   // return
   return (
@@ -142,44 +156,42 @@ function App() {
       {/* API STARTS HERE!! */}
       {/* API add guest */}
       <h1>Add Guest to Guestlist API</h1>
-      <button
-        onClick={() => {
-          setRefetch(!refetch);
-        }}
-      >
-        Add Guest to Guestlist API
-      </button>
-
-      {/* API delete guest */}
-      <h1>Delete Guest from API</h1>
-      <button
-        onClick={() => {
-          setRefetch02(!refetch02);
-        }}
-      >
-        Delete Guest from API
-      </button>
+      <button onClick={handlePost}>Add Guest to API</button>
 
       {/* API print Guestlist */}
       <h1>Get all Guests from API</h1>
-
-      {guests.map((userapi) => {
-        return (
-          <div key={`user02-profile-${userapi.id}`}>
-            <div>
-              {userapi.id} {userapi.firstName} {userapi.lastName}
+      {!isLoading &&
+        guests.map((userapi) => {
+          return (
+            <div key={`user02-profile-${userapi.id}`}>
+              <div>
+                {userapi.id} {userapi.firstName} {userapi.lastName}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
       {/* API get all guests */}
       <button
         onClick={() => {
+          setIsLoading(true);
           setRefetch(!refetch);
         }}
       >
         Get All Guests from API
       </button>
+      {/* API delte ALL guests */}
+      <button onClick={deleteAllGuests}>Delete all guests from API</button>
+
+      {/* API delete one guest (not working right now!!)
+      <h1>Delete Guest from API</h1>
+      <button
+        onClick={() => {
+          setIsLoading(true);
+          setRefetch02(!refetch02);
+        }}
+      >
+        Delete Guest from API
+      </button>*/}
     </div>
   );
 }
